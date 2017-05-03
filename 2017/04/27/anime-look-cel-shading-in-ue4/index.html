@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Anime-Look Cel Shading in UE4 | Theoroy</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="Theoroy">
+  
+  <link rel="shortcut icon" type="image/png" href="//blog.ghost.org/content/images/2013/Nov/bloglogo_1-1.png" />
+  
+  
+  
+  
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <header class="site-head" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="//blog.ghost.org/content/images/2013/Nov/bloglogo_1-1.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Theoroy</h1>
+            <h2 class="blog-description"></h2>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <nav class="pagination" role="pagination">
+    <a class="static-pages-link" href="/2017/04/24/about-theoroy/">About Theoroy</a>
+    <a class="static-pages-link" href="/">Recent Posts</a>
+    <a class="static-pages-link" href="/2017/04/27/projects/">Projects</a>
+    <a class="static-pages-link" href="/2017/04/27/research-development/">Research/Development</a>
+  </nav>
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2017-04-28T01:28:44.000Z" itemprop="datePublished">
+          2017-04-27
+      </time>
+    
+    
+    | 
+    <a href='/tags/UE4/'>UE4</a>,
+    
+    <a href='/tags/Image-Processing/'>Image Processing</a>,
+    
+    <a href='/tags/Cel-Shading/'>Cel-Shading</a>
+    
+    
+</span>
+    <h1 class="post-title">Anime-Look Cel Shading in UE4</h1>
+    <section class="post-content">
+      <p><img src="/images/cel_shading_ue4/cel_shading_result_comparison.png" alt=""><br>Unreal Engine 4 is a great game engine that comes with a fully node-based material editor that enables us to create various shaders without writing even a line of code. I tried creating anime-look cel shaded images using only the material editor (no engine customization!) and got a pretty decent result, so I’d like to share the process.</p>
+<h2 id="Contents"><a href="#Contents" class="headerlink" title="Contents"></a>Contents</h2><ul>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Overview">Overview</a></li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Cel-Shading">Cel Shading</a><ul>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Banded-Lighting">Banded Lighting</a></li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Rim-Light-Highlight">Rim Light + Highlight</a></li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Modifying-Textures">Modifying Textures</a></li>
+</ul>
+</li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Edge-Detection">Edge Detection</a><ul>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Laplacian-Filter">Laplacian Filter</a></li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Modifying-Meshes">Modifying Meshes</a></li>
+</ul>
+</li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Final-Result">Final Result</a></li>
+<li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Reference">Reference</a></li>
+</ul>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In order to create anime-look images, basically we need to accomplish</p>
+<ol>
+<li>Cel shading(Banded lighting)</li>
+<li>Edge detection.</li>
+</ol>
+<p>Let’s take a look at them one by one.</p>
+<p><em>I use <a href="http://3d.nicovideo.jp/works/td8608" target="_blank" rel="external">Pronama-chan FBX</a> in this tutorial. If you wish to use it, please read its <a href="http://pronama.azurewebsites.net/pronama/guideline/" target="_blank" rel="external">license</a>.</em></p>
+<h2 id="Cel-Shading"><a href="#Cel-Shading" class="headerlink" title="Cel Shading"></a>Cel Shading</h2><h5 id="Banded-Lighting"><a href="#Banded-Lighting" class="headerlink" title="Banded Lighting"></a>Banded Lighting</h5><p>Cel shading is a type of shading where the lighting is rendered as a band or multiple bands of colors instead of gradation of colors to create stylized and flat images. Here’s a great tutorial for cel shading in UE4: <a href="https://wiki.unrealengine.com/Cel_Shading_Post_Process" target="_blank" rel="external">Cel Shading Post Process</a>. In this tutorial, cel shading is done by creating a post-process material which extracts the lighting from the scence and uses a lookup table texture to band the lighting. I used the exact same method for cel shading. </p>
+<p>Following the tutorial, I created a post-process material “PP_CelShader.”<br>(Please right-click on the image and select “Open image in new tab” to see bigger images.)<br><img src="/images/cel_shading_ue4/pp_cel_shader.png" alt=""><br>As the author of the tutorial mentions, any materials that are in this cel-shaded scene need to have</p>
+<ul>
+<li>Roughness value of 1</li>
+<li>Metalic value of 0</li>
+<li>Emmisive value of 0,</li>
+</ul>
+<p>and make sure you have a post-process volume in the scene that is set to “Unbound” and has a Bloom intensity value of 0 and both min and max brightness value under Auto Exposure of 2. Also, you need to set Blendable Location to “Before Translucency” in the material’s details tab. </p>
+<p>The image below is the lookup texture that is used in the texture node in the post-process material. It’s extremely narrow as its size is 1 x 128 px.<br><img src="/images/cel_shading_ue4/cel_shading_lookup_texture.png" alt=""><br>Import this lookup texture into UE4 and go to the settings panel. Under Texture section, you have to untick sRGB, set both X and Y tiling method to “Clamp”, and change the filter to “Nearest.”<br>If you want to adjust the threshold of light bandings or add more bands, you can do so by modifying this lookup texture.</p>
+<p>If you import the Pronama-chan model to UE4 and set the textures to the materials without any additional settings, it should look like the screenshot below. This kind of models tend to look like anime figures when they are rendered with PBR.<br><img src="/images/cel_shading_ue4/cel_shading_original.png" alt=""></p>
+<p>Now let’s apply the post-process we just created.<br>The screenshot below is the result. The lighting is broken down into a band and thereby it’s binarized.<br><img src="/images/cel_shading_ue4/cel_shading_cel_shaded_only.png" alt=""></p>
+<h5 id="Rim-Light-Highlight"><a href="#Rim-Light-Highlight" class="headerlink" title="Rim Light + Highlight"></a>Rim Light + Highlight</h5><p>Now that we have a cel-shaded image, but it isn’t looking very like anime. We need to add some more effects. The effects include rim light and highlight.</p>
+<p>I created two material functions, “MF_ToonRimLight” and “_MF<em>HairSpecular</em>, then used those functions to create “M_Toon”, a material that adds the effect of rim light and highlight to objects.</p>
+<p>(MF_ToonRimLight)<br><img src="/images/cel_shading_ue4/mf_toon_rim_light.png" alt=""><br>(_MF<em>HairSpecular</em>)<br><img src="/images/cel_shading_ue4/mf_hair_specular.png" alt=""></p>
+<p>What these functions do is fairly simple. Both utilize the dot product of normal and the direction of the camera (and the directional light) to determine whether or not one pixel on a surface needs to be highlighted. Note that the direction of the directional light is expressed as a vector named “HairSpec_LightDir” in “MF_HairSpecular” as materials don’t have access to light information.</p>
+<p>“M_Toon” just takes a base color map and adds rim light and/or highlight to it. You can change the texture node to a color node so that you can have a material of single color, which is good for a character’s hair and skin.<br>(M_Toon)<br><img src="/images/cel_shading_ue4/m_toon.png" alt=""></p>
+<p>Here’s the result of rim light and highlight on the hair.<br>I created a material that has a color node instead of a texture node and used it with the parameters shown below:</p>
+<p>HairSpec_Alpha: 0.183<br>HairSpec_Power: 2.320<br>HairSpec_TargetDot: 0.492<br>HairSoec_TargetDotRange: 0.1<br>RimLight_Alpha: 0.2<br>RimLight_Power: 1.0</p>
+<p><img src="/images/cel_shading_ue4/cel_shading_hair_result_comparison.png" alt=""></p>
+<h5 id="Modifying-Textures"><a href="#Modifying-Textures" class="headerlink" title="Modifying Textures"></a>Modifying Textures</h5><p>To make the image more anime-looking, we can modify textures. In general, coloring in anime is pretty simple, and gradation is not used very often.</p>
+<p>(Original texture)<br><img src="/images/cel_shading_ue4/skirt_texture_original.png" alt=""><br>(Modified texture)<br><img src="/images/cel_shading_ue4/skirt_texture_modified.png" alt=""><br>(Rendered with modified texture)<br><img src="/images/cel_shading_ue4/modified_textures_comparison.png" alt=""></p>
+<h2 id="Edge-Detection"><a href="#Edge-Detection" class="headerlink" title="Edge Detection"></a>Edge Detection</h2><h5 id="Laplacian-Filter"><a href="#Laplacian-Filter" class="headerlink" title="Laplacian Filter"></a>Laplacian Filter</h5><p>Now, we tackle one of the most essential things, that is edge detection. One simple thing we can do is implementing Laplacian filter. Filtering in image processing is a method to modify or enhance some certain features of images. Laplacian filter is a filter used to detect areas that show rapid change, which are edges.</p>
+<p>I created a post-process material “PP_ToonEdge” that applies Laplacian filter to normal and depth to detect edges, mixes them together, and add the edges to output images. This material also allows us to exclude objects from edge detection by changing their custom depth stencil values. If you set the custom depth stencil value of an object to 1 or greater, this post-process draws edges around/on the object.</p>
+<p>(PP_ToonEdge)<br><img src="/images/cel_shading_ue4/pp_toon_edge.png" alt=""><br>(Rendering configuration for edge detection. You need to set the custom depth stencil to 1 or greater.)<br><img src="/images/cel_shading_ue4/cel_shading_rendering_configuration.png" alt=""></p>
+<p>Here’s the material functions for Laplacian filter. These functions are used in “PP_ToonEdge.”<br><img src="/images/cel_shading_ue4/mf_laplacian_normal.png" alt=""><br><img src="/images/cel_shading_ue4/mf_laplacian_depth.png" alt=""></p>
+<p>As the Laplacian filters need to access to each pixel, I created two material functions that access to single pixel of respectively normal and depth.<br><img src="/images/cel_shading_ue4/mf_get_pixel_normal.png" alt=""><br><img src="/images/cel_shading_ue4/mf_get_pixel_depth.png" alt=""></p>
+<p>Now that we have cel shading and edges!<br><img src="/images/cel_shading_ue4/cel_shading_edge_result.png" alt=""></p>
+<h5 id="Modifying-Meshes"><a href="#Modifying-Meshes" class="headerlink" title="Modifying Meshes"></a>Modifying Meshes</h5><p>The edges we just obtained are great, but they are sort of scratchy. In order to have more sharp edges, we can modify our models a little bit. Use Blender or some other 3D modeling software to open the model and modify it so that the model has clearer edges.</p>
+<p>I added some edges on the clothes. However, this method may cause significant increase of number of vertices. We should also consider drawing edges directly on textures instead.</p>
+<p>(Original model)<br><img src="/images/cel_shading_ue4/skirt_model_original.png" alt=""><br>(Modified model)<br><img src="/images/cel_shading_ue4/skirt_model_modified.png" alt=""><br>(Original model)<br><img src="/images/cel_shading_ue4/overview_model_original.png" alt=""><br>(Modified model)<br><img src="/images/cel_shading_ue4/overview_model_modified.png" alt=""></p>
+<p>With clearer and sharper edges, the model is now looking good.<br><img src="/images/cel_shading_ue4/cel_shading_final_result.png" alt=""></p>
+<h5 id="Color-enhancement"><a href="#Color-enhancement" class="headerlink" title="Color enhancement"></a>Color enhancement</h5><p>One more thing we can do is the color enhancement. More specifically, we can adjust the contrast of images with “Color Grading” which is provided in post-process volume.</p>
+<p>(I increased the contrast a bit.)<br><img src="/images/cel_shading_ue4/Screenshot.png" alt=""></p>
+<h2 id="Final-Result"><a href="#Final-Result" class="headerlink" title="Final Result"></a>Final Result</h2><p>Here’s a comparison of the model with only base color textures plugged into Emmisive channel and our result.<br><img src="/images/cel_shading_ue4/cel_shading_result_comparison.png" alt=""></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>This tutorial is based on what I learned from the articles below. Credit goes to:</p>
+<ul>
+<li><a href="https://wiki.unrealengine.com/Cel_Shading_Post_Process" target="_blank" rel="external">Cel Shading Post Process</a></li>
+<li><a href="http://ogimafu.blogspot.jp/search/label/%E3%82%BB%E3%83%AB%E3%83%AB%E3%83%83%E3%82%AF" target="_blank" rel="external">開発日誌:【UE4】セルっぽいルックを頑張ってみる</a></li>
+<li><a href="http://unrealengine.hatenablog.com/entry/2016/05/30/220000" target="_blank" rel="external">UE4 トゥーン（セル）シェーディングをしたいものに対してのみかける方法 - Let’s Enjoy Unreal Engine</a></li>
+<li><a href="http://unrealengine.hatenablog.com/entry/2016/05/29/204545" target="_blank" rel="external">UE4 比較的安価な手法でトゥーン（セル）シェーディングをやってみる - Let’s Enjoy Unreal Engine</a></li>
+</ul>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Tatsuro Ide</h4>
+    <p>An undergrad student majoring in computer science.</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://blog.theoroy.com/2017/04/27/anime-look-cel-shading-in-ue4/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.theoroy.com/2017/04/27/anime-look-cel-shading-in-ue4/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.theoroy.com/2017/04/27/anime-look-cel-shading-in-ue4/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2017/04/27/research-development/">
+        Research/Development →
+    </a>
+    
+</nav>
+  <div id="comment" class="comments-area">
+    <h1 class="title"><a href="#disqus_comments" name="disqus_comments">Comments</a></h1>
+
+    
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+    
+</div>
+</main>
+
+
+  
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Theoroy</a> &copy; 2017 &bull; All rights reserved.</section>
+     <section class="poweredby">Published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-46363988-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'theoroy';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+</body>
+</html>
