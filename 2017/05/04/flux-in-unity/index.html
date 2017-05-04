@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Projects | Theoroy</title>
+  <title>Flux Architecture in Unity | Theoroy</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -47,17 +47,24 @@
   </nav>
   <article class="post">
     <span class="post-meta">
-      <time datetime="2017-04-27T14:42:55.000Z" itemprop="datePublished">
-          2017-04-27
+      <time datetime="2017-05-04T08:56:50.000Z" itemprop="datePublished">
+          2017-05-04
       </time>
     
+    
+    | 
+    <a href='/tags/Architecture/'>Architecture</a>,
+    
+    <a href='/tags/Design-Pattern/'>Design Pattern</a>,
+    
+    <a href='/tags/Software-Engineering/'>Software Engineering</a>
+    
+    
 </span>
-    <h1 class="post-title">Projects</h1>
+    <h1 class="post-title">Flux Architecture in Unity</h1>
     <section class="post-content">
-      <p>Here are some of the stuff I have done.</p>
-<h4 id="instant-lambda"><a href="#instant-lambda" class="headerlink" title="instant-lambda"></a>instant-lambda</h4><p><img src="/images/instant-lambda_screenshot.png" alt=""><br>Tiny command line tool to create, run, and deploy Amazon Lambda.<br>Run <code>$ npm install -g instant-lambda</code> to install it via npm.<br>Available at:<br><a href="https://github.com/idetatsu/instant-lambda" target="_blank" rel="external">GitHub - instant-lambda</a><br><a href="https://www.npmjs.com/package/instant-lambda" target="_blank" rel="external">npm - instant-lambda</a><br><em>Developed in April 2017 - present</em></p>
-<h4 id="Gimbal-Lock-Escape-Game"><a href="#Gimbal-Lock-Escape-Game" class="headerlink" title="Gimbal Lock: Escape Game"></a>Gimbal Lock: Escape Game</h4><p><img src="/images/gimballock.png" alt=""><br><img src="/images/gimballock_screenshot.png" alt=""><br>Android game app built with Unity, also one of my earliest works that are released to public.<br>When I released this, I had only a few months of coding experience and didn’t know any useful tools like git. I still remember the struggle doing version control by hand.<br>Still available at <a href="https://play.google.com/store/apps/details?id=com.GameObjects.GimbalLock" target="_blank" rel="external">Google Play Store</a>.<br><em>Developed in January 2014</em></p>
-
+      <p>Working on the post. Full article available soon.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AwesomeGameStore</span> : <span class="title">Store</span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">static</span> <span class="keyword">private</span> List&lt;INotifyee&gt; Subscribers = <span class="keyword">new</span> List&lt;INotifyee&gt;();</div><div class="line">	<span class="keyword">static</span> <span class="keyword">private</span> Reducer Reducer;</div><div class="line">	<span class="keyword">static</span> <span class="keyword">private</span> State State;</div><div class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Subscribe</span>(<span class="params">INotifyee notifyee</span>)</span></div><div class="line">	&#123;</div><div class="line">		Subscribers.Add(notifyee);</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispatch</span>(<span class="params">Action action</span>)</span></div><div class="line">	&#123;</div><div class="line">		State = Reducer.ProcessAction(State, action);</div><div class="line">		Notify();</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">public</span> State <span class="title">GetState</span>(<span class="params"></span>)</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">return</span> State;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
     </section>
     <footer class="post-footer">
       <section class="author">
@@ -66,15 +73,15 @@
 </section>
       <section class="share">
     <h4>Share this post</h4>
-    <a class="icon-twitter" href="http://twitter.com/share?url=http://blog.theoroy.com/2017/04/27/projects/"
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://blog.theoroy.com/2017/05/04/flux-in-unity/"
        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
         <span class="hidden">Twitter</span>
     </a>
-    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.theoroy.com/2017/04/27/projects/"
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.theoroy.com/2017/05/04/flux-in-unity/"
        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
         <span class="hidden">Facebook</span>
     </a>
-    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.theoroy.com/2017/04/27/projects/"
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.theoroy.com/2017/05/04/flux-in-unity/"
        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
         <span class="hidden">Google+</span>
     </a>
@@ -83,14 +90,10 @@
   </article>
   <nav class="pagination" role="pagination">
     
-    <a class="newer-posts" href="/2017/04/27/research-development/">
-        ← Research/Development
-    </a>
-    
     <span class="page-number">•</span>
     
-    <a class="older-posts" href="/2017/04/24/about-theoroy/">
-        About Theoroy →
+    <a class="older-posts" href="/2017/04/27/anime-look-cel-shading-in-ue4/">
+        Anime-Look Cel Shading in UE4 →
     </a>
     
 </nav>
