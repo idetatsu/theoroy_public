@@ -63,7 +63,7 @@
 </span>
     <h1 class="post-title">Anime-Look Cel Shading in UE4</h1>
     <section class="post-content">
-      <p><img src="/images/cel_shading_ue4/cel_shading_result_comparison.png" alt=""><br>Unreal Engine 4 is a great game engine that comes with a fully node-based material editor that enables us to create various shaders without writing even a line of code. I tried creating anime-look cel shaded images using only the material editor (no engine customization!) and got a pretty decent result, so I’d like to share the process.</p>
+      <p><img src="/images/cel_shading_ue4/cel_shading_result_comparison.jpg" alt=""><br>Unreal Engine 4 is a great game engine that comes with a fully node-based material editor that enables us to create various shaders without writing even a line of code. I tried creating anime-look cel shaded images using only the material editor (no engine customization!) and got a pretty decent result, so I’d like to share the process.</p>
 <h2 id="Contents"><a href="#Contents" class="headerlink" title="Contents"></a>Contents</h2><ul>
 <li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Overview">Overview</a></li>
 <li><a href="/2017/04/27/anime-look-cel-shading-in-ue4/#Cel-Shading">Cel Shading</a><ul>
@@ -87,40 +87,40 @@
 </ol>
 <p>Let’s take a look at them one by one.</p>
 <p><em>I use <a href="http://3d.nicovideo.jp/works/td8608" target="_blank" rel="external">Pronama-chan FBX</a> in this tutorial. If you wish to use it, please read its <a href="http://pronama.azurewebsites.net/pronama/guideline/" target="_blank" rel="external">license</a>.</em></p>
-<h2 id="Cel-Shading"><a href="#Cel-Shading" class="headerlink" title="Cel Shading"></a>Cel Shading</h2><h5 id="Banded-Lighting"><a href="#Banded-Lighting" class="headerlink" title="Banded Lighting"></a>Banded Lighting</h5><p>Cel shading is a type of shading where the lighting is rendered as a band or multiple bands of colors instead of gradation of colors to create stylized and flat images. Here’s a great tutorial for cel shading in UE4: <a href="https://wiki.unrealengine.com/Cel_Shading_Post_Process" target="_blank" rel="external">Cel Shading Post Process</a>. In this tutorial, cel shading is done by creating a post-process material which extracts the lighting from the scence and uses a lookup table texture to band the lighting. I used the exact same method for cel shading. </p>
-<p>Following the tutorial, I created a post-process material “PP_CelShader.”<br>(Please right-click on the image and select “Open image in new tab” to see bigger images.)<br><img src="/images/cel_shading_ue4/pp_cel_shader.png" alt=""><br>As the author of the tutorial mentions, any materials that are in this cel-shaded scene need to have</p>
+<h2 id="Cel-Shading"><a href="#Cel-Shading" class="headerlink" title="Cel Shading"></a>Cel Shading</h2><h5 id="Banded-Lighting"><a href="#Banded-Lighting" class="headerlink" title="Banded Lighting"></a>Banded Lighting</h5><p>Cel shading is a type of shading where the lighting is rendered as a band or multiple bands of colors instead of gradation of colors to create stylized and flat images. Here’s a great tutorial for cel shading in UE4: <a href="https://wiki.unrealengine.com/Cel_Shading_Post_Process" target="_blank" rel="external">Cel Shading Post Process</a>. In this tutorial, cel shading is done by creating a post-process material which extracts the lighting from the scence and uses a lookup table texture to band the lighting. I used the exact same method for cel shading.</p>
+<p>Following the tutorial, I created a post-process material “PP_CelShader.”<br>(Please right-click on the image and select “Open image in new tab” to see bigger images.)<br><img src="/images/cel_shading_ue4/pp_cel_shader.jpg" alt=""><br>As the author of the tutorial mentions, any materials that are in this cel-shaded scene need to have</p>
 <ul>
 <li>Roughness value of 1</li>
 <li>Metalic value of 0</li>
 <li>Emmisive value of 0,</li>
 </ul>
-<p>and make sure you have a post-process volume in the scene that is set to “Unbound” and has a Bloom intensity value of 0 and both min and max brightness value under Auto Exposure of 2. Also, you need to set Blendable Location to “Before Translucency” in the material’s details tab. </p>
-<p>The image below is the lookup texture that is used in the texture node in the post-process material. It’s extremely narrow as its size is 1 x 128 px.<br><img src="/images/cel_shading_ue4/cel_shading_lookup_texture.png" alt=""><br>Import this lookup texture into UE4 and go to the settings panel. Under Texture section, you have to untick sRGB, set both X and Y tiling method to “Clamp”, and change the filter to “Nearest.”<br>If you want to adjust the threshold of light bandings or add more bands, you can do so by modifying this lookup texture.</p>
-<p>If you import the Pronama-chan model to UE4 and set the textures to the materials without any additional settings, it should look like the screenshot below. This kind of models tend to look like anime figures when they are rendered with PBR.<br><img src="/images/cel_shading_ue4/cel_shading_original.png" alt=""></p>
-<p>Now let’s apply the post-process we just created.<br>The screenshot below is the result. The lighting is broken down into a band and thereby it’s binarized.<br><img src="/images/cel_shading_ue4/cel_shading_cel_shaded_only.png" alt=""></p>
+<p>and make sure you have a post-process volume in the scene that is set to “Unbound” and has a Bloom intensity value of 0 and both min and max brightness value under Auto Exposure of 2. Also, you need to set Blendable Location to “Before Translucency” in the material’s details tab.</p>
+<p>The image below is the lookup texture that is used in the texture node in the post-process material. It’s extremely narrow as its size is 1 x 128 px.<br><img src="/images/cel_shading_ue4/cel_shading_lookup_texture.jpg" alt=""><br>Import this lookup texture into UE4 and go to the settings panel. Under Texture section, you have to untick sRGB, set both X and Y tiling method to “Clamp”, and change the filter to “Nearest.”<br>If you want to adjust the threshold of light bandings or add more bands, you can do so by modifying this lookup texture.</p>
+<p>If you import the Pronama-chan model to UE4 and set the textures to the materials without any additional settings, it should look like the screenshot below. This kind of models tend to look like anime figures when they are rendered with PBR.<br><img src="/images/cel_shading_ue4/cel_shading_original.jpg" alt=""></p>
+<p>Now let’s apply the post-process we just created.<br>The screenshot below is the result. The lighting is broken down into a band and thereby it’s binarized.<br><img src="/images/cel_shading_ue4/cel_shading_cel_shaded_only.jpg" alt=""></p>
 <h5 id="Rim-Light-Highlight"><a href="#Rim-Light-Highlight" class="headerlink" title="Rim Light + Highlight"></a>Rim Light + Highlight</h5><p>Now that we have a cel-shaded image, but it isn’t looking very like anime. We need to add some more effects. The effects include rim light and highlight.</p>
 <p>I created two material functions, “MF_ToonRimLight” and “_MF<em>HairSpecular</em>, then used those functions to create “M_Toon”, a material that adds the effect of rim light and highlight to objects.</p>
-<p>(MF_ToonRimLight)<br><img src="/images/cel_shading_ue4/mf_toon_rim_light.png" alt=""><br>(_MF<em>HairSpecular</em>)<br><img src="/images/cel_shading_ue4/mf_hair_specular.png" alt=""></p>
+<p>(MF_ToonRimLight)<br><img src="/images/cel_shading_ue4/mf_toon_rim_light.jpg" alt=""><br>(_MF<em>HairSpecular</em>)<br><img src="/images/cel_shading_ue4/mf_hair_specular.jpg" alt=""></p>
 <p>What these functions do is fairly simple. Both utilize the dot product of normal and the direction of the camera (and the directional light) to determine whether or not one pixel on a surface needs to be highlighted. Note that the direction of the directional light is expressed as a vector named “HairSpec_LightDir” in “MF_HairSpecular” as materials don’t have access to light information.</p>
-<p>“M_Toon” just takes a base color map and adds rim light and/or highlight to it. You can change the texture node to a color node so that you can have a material of single color, which is good for a character’s hair and skin.<br>(M_Toon)<br><img src="/images/cel_shading_ue4/m_toon.png" alt=""></p>
+<p>“M_Toon” just takes a base color map and adds rim light and/or highlight to it. You can change the texture node to a color node so that you can have a material of single color, which is good for a character’s hair and skin.<br>(M_Toon)<br><img src="/images/cel_shading_ue4/m_toon.jpg" alt=""></p>
 <p>Here’s the result of rim light and highlight on the hair.<br>I created a material that has a color node instead of a texture node and used it with the parameters shown below:</p>
 <p>HairSpec_Alpha: 0.183<br>HairSpec_Power: 2.320<br>HairSpec_TargetDot: 0.492<br>HairSoec_TargetDotRange: 0.1<br>RimLight_Alpha: 0.2<br>RimLight_Power: 1.0</p>
-<p><img src="/images/cel_shading_ue4/cel_shading_hair_result_comparison.png" alt=""></p>
+<p><img src="/images/cel_shading_ue4/cel_shading_hair_result_comparison.jpg" alt=""></p>
 <h5 id="Modifying-Textures"><a href="#Modifying-Textures" class="headerlink" title="Modifying Textures"></a>Modifying Textures</h5><p>To make the image more anime-looking, we can modify textures. In general, coloring in anime is pretty simple, and gradation is not used very often.</p>
-<p>(Original texture)<br><img src="/images/cel_shading_ue4/skirt_texture_original.png" alt=""><br>(Modified texture)<br><img src="/images/cel_shading_ue4/skirt_texture_modified.png" alt=""><br>(Rendered with modified texture)<br><img src="/images/cel_shading_ue4/modified_textures_comparison.png" alt=""></p>
+<p>(Original texture)<br><img src="/images/cel_shading_ue4/skirt_texture_original.jpg" alt=""><br>(Modified texture)<br><img src="/images/cel_shading_ue4/skirt_texture_modified.jpg" alt=""><br>(Rendered with modified texture)<br><img src="/images/cel_shading_ue4/modified_textures_comparison.jpg" alt=""></p>
 <h2 id="Edge-Detection"><a href="#Edge-Detection" class="headerlink" title="Edge Detection"></a>Edge Detection</h2><h5 id="Laplacian-Filter"><a href="#Laplacian-Filter" class="headerlink" title="Laplacian Filter"></a>Laplacian Filter</h5><p>Now, we tackle one of the most essential things, that is edge detection. One simple thing we can do is implementing Laplacian filter. Filtering in image processing is a method to modify or enhance some certain features of images. Laplacian filter is a filter used to detect areas that show rapid change, which are edges.</p>
 <p>I created a post-process material “PP_ToonEdge” that applies Laplacian filter to normal and depth to detect edges, mixes them together, and add the edges to output images. This material also allows us to exclude objects from edge detection by changing their custom depth stencil values. If you set the custom depth stencil value of an object to 1 or greater, this post-process draws edges around/on the object.</p>
-<p>(PP_ToonEdge)<br><img src="/images/cel_shading_ue4/pp_toon_edge.png" alt=""><br>(Rendering configuration for edge detection. You need to set the custom depth stencil to 1 or greater.)<br><img src="/images/cel_shading_ue4/cel_shading_rendering_configuration.png" alt=""></p>
-<p>Here’s the material functions for Laplacian filter. These functions are used in “PP_ToonEdge.”<br><img src="/images/cel_shading_ue4/mf_laplacian_normal.png" alt=""><br><img src="/images/cel_shading_ue4/mf_laplacian_depth.png" alt=""></p>
-<p>As the Laplacian filters need to access to each pixel, I created two material functions that access to single pixel of respectively normal and depth.<br><img src="/images/cel_shading_ue4/mf_get_pixel_normal.png" alt=""><br><img src="/images/cel_shading_ue4/mf_get_pixel_depth.png" alt=""></p>
-<p>Now that we have cel shading and edges!<br><img src="/images/cel_shading_ue4/cel_shading_edge_result.png" alt=""></p>
+<p>(PP_ToonEdge)<br><img src="/images/cel_shading_ue4/pp_toon_edge.jpg" alt=""><br>(Rendering configuration for edge detection. You need to set the custom depth stencil to 1 or greater.)<br><img src="/images/cel_shading_ue4/cel_shading_rendering_configuration.jpg" alt=""></p>
+<p>Here’s the material functions for Laplacian filter. These functions are used in “PP_ToonEdge.”<br><img src="/images/cel_shading_ue4/mf_laplacian_normal.jpg" alt=""><br><img src="/images/cel_shading_ue4/mf_laplacian_depth.jpg" alt=""></p>
+<p>As the Laplacian filters need to access to each pixel, I created two material functions that access to single pixel of respectively normal and depth.<br><img src="/images/cel_shading_ue4/mf_get_pixel_normal.jpg" alt=""><br><img src="/images/cel_shading_ue4/mf_get_pixel_depth.jpg" alt=""></p>
+<p>Now that we have cel shading and edges!<br><img src="/images/cel_shading_ue4/cel_shading_edge_result.jpg" alt=""></p>
 <h5 id="Modifying-Meshes"><a href="#Modifying-Meshes" class="headerlink" title="Modifying Meshes"></a>Modifying Meshes</h5><p>The edges we just obtained are great, but they are sort of scratchy. In order to have more sharp edges, we can modify our models a little bit. Use Blender or some other 3D modeling software to open the model and modify it so that the model has clearer edges.</p>
 <p>I added some edges on the clothes. However, this method may cause significant increase of number of vertices. We should also consider drawing edges directly on textures instead.</p>
-<p>(Original model)<br><img src="/images/cel_shading_ue4/skirt_model_original.png" alt=""><br>(Modified model)<br><img src="/images/cel_shading_ue4/skirt_model_modified.png" alt=""><br>(Original model)<br><img src="/images/cel_shading_ue4/overview_model_original.png" alt=""><br>(Modified model)<br><img src="/images/cel_shading_ue4/overview_model_modified.png" alt=""></p>
-<p>With clearer and sharper edges, the model is now looking good.<br><img src="/images/cel_shading_ue4/cel_shading_final_result.png" alt=""></p>
+<p>(Original model)<br><img src="/images/cel_shading_ue4/skirt_model_original.jpg" alt=""><br>(Modified model)<br><img src="/images/cel_shading_ue4/skirt_model_modified.jpg" alt=""><br>(Original model)<br><img src="/images/cel_shading_ue4/overview_model_original.jpg" alt=""><br>(Modified model)<br><img src="/images/cel_shading_ue4/overview_model_modified.jpg" alt=""></p>
+<p>With clearer and sharper edges, the model is now looking good.<br><img src="/images/cel_shading_ue4/cel_shading_final_result.jpg" alt=""></p>
 <h5 id="Color-enhancement"><a href="#Color-enhancement" class="headerlink" title="Color enhancement"></a>Color enhancement</h5><p>One more thing we can do is the color enhancement. More specifically, we can adjust the contrast of images with “Color Grading” which is provided in post-process volume.</p>
-<p>(I increased the contrast a bit.)<br><img src="/images/cel_shading_ue4/Screenshot.png" alt=""></p>
-<h2 id="Final-Result"><a href="#Final-Result" class="headerlink" title="Final Result"></a>Final Result</h2><p>Here’s a comparison of the model with only base color textures plugged into Emmisive channel and our result.<br><img src="/images/cel_shading_ue4/cel_shading_result_comparison.png" alt=""></p>
+<p>(I increased the contrast a bit.)<br><img src="/images/cel_shading_ue4/Screenshot.jpg" alt=""></p>
+<h2 id="Final-Result"><a href="#Final-Result" class="headerlink" title="Final Result"></a>Final Result</h2><p>Here’s a comparison of the model with only base color textures plugged into Emmisive channel and our result.<br><img src="/images/cel_shading_ue4/cel_shading_result_comparison.jpg" alt=""></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>This tutorial is based on what I learned from the articles below. Credit goes to:</p>
 <ul>
 <li><a href="https://wiki.unrealengine.com/Cel_Shading_Post_Process" target="_blank" rel="external">Cel Shading Post Process</a></li>
@@ -154,14 +154,14 @@
   </article>
   <nav class="pagination" role="pagination">
     
-    <a class="newer-posts" href="/2017/04/27/research-development/">
-        ← Research/Development
+    <a class="newer-posts" href="/2017/05/04/flux-in-unity/">
+        ← Flux Architecture in Unity
     </a>
     
     <span class="page-number">•</span>
     
-    <a class="older-posts" href="/2017/05/04/flux-in-unity/">
-        Flux Architecture in Unity →
+    <a class="older-posts" href="/2017/04/27/research-development/">
+        Research/Development →
     </a>
     
 </nav>
